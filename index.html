@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alex Forsey-Smerek</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: #faf9f7;
+    color: #222;
+    line-height: 1.7;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 6.5rem 0rem 6rem;
+  }
+
+  /* ── SHARED SECTION HEADING ── */
+  .section-heading {
+    font-size: 0.96rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  /* ── SHARED SECTION BLOCK ── */
+  .section-block {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding-bottom: 2rem;
+
+  }
+
+  .header img {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 4px solid #e0e0e0;
+  }
+
+  .header-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .header-info h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .header-info .subtitle {
+    color: #555;
+    font-size: 1rem;
+  }
+
+  .header-info .email {
+    font-size: 0.75rem;
+    color: #444;
+    margin-bottom: 1.5rem;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+  }
+
+  .links a {
+    font-size: 0.82rem;
+    text-decoration: none;
+    color: #7F77DD;
+    border: 1px solid #7F77DD;
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+    transition: background 0.15s;
+  }
+  .links a:hover { background: #EEEDFE; }
+
+  /* ── BODY TEXT ── */
+  .section-block p, .section-block ul {
+    margin-top: 0;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  .section-block a {
+    color: #7F77DD;
+    text-decoration: none;
+  }
+  .section-block a:hover { text-decoration: underline; }
+
+  .section-block p + p {
+  margin-top: 1rem;
+  }
+
+  /* ── PROJECTS TOGGLE ── */
+  button.section-heading {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    user-select: none;
+  }
+  button.section-heading:hover { color: #7F77DD; }
+
+  .toggle-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  .toggle-arrow.open { transform: rotate(90deg); }
+
+  /* ── PROJECTS LIST ── */
+  .projects-list {
+    display: none;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 0.5rem;
+  }
+  .projects-list.open { display: flex; }
+
+  .project-item {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    padding-bottom: 1.2rem;
+    margin-bottom: 0rem;
+  }
+  .project-item:last-child { margin-bottom: 0; padding-bottom: 0; }
+
+  .project-item img {
+    width: 170px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: #f0f0f0;
+    border: 1px solid #ede9e3;
+  }
+
+  .project-item-body { flex: 1; }
+
+  .project-item-body .proj-title {
+    font-size: 0.95rem;
+    font-weight: 550;
+    color: #333;
+    margin-bottom: 0.1rem;
+    line-height: 1.3;
+  }
+
+  .project-item-body .proj-authors {
+    font-size: 0.82rem;
+    color: #555;
+    line-height: 1.3;
+    margin-bottom: 0rem;
+    margin: 0
+  }
+
+  .project-item-body .proj-authors strong {
+    font-weight: 600;
+    color: #333;
+    line-height: 1.3;
+    margin: 0
+  }
+
+  .project-item-body .proj-venue {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: #666;
+    margin-bottom: 0rem;
+    line-height: 1.3;
+    margin: 0
+  }
+
+  .project-item-body .proj-links {
+    font-size: 0.78rem;
+    color: #888;
+    line-height: 1.3;
+    margin: 0
+  }
+
+  .project-item-body .proj-links a {
+    color: #7F77DD;
+    text-decoration: none;
+    line-height: 1.3;
+    margin: 0
+  }
+  .project-item-body .proj-links a:hover { text-decoration: underline; }
+
+  .summary-btn {
+    background: none; border: none; padding: 0; cursor: pointer;
+    color: #7F77DD; font-size: 0.78rem; font-family: inherit;
+  }
+  .summary-btn:hover { text-decoration: underline; }
+
+  .proj-summary {
+      display: none;
+      font-size: 0.82rem;
+      color: #555;
+      line-height: 1.5;
+      margin-top: 0.3rem;
+      padding: 0.4rem 0.6rem;
+      border-left: 2px solid #CECBF6;
+      background: #EEEDFE;
+      border-radius: 0 4px 4px 0;
+  }
+
+  /* ── TEACHING / REVIEWING ── */
+  .section-block ul { padding-left: 1.2rem; margin-top: 0.05rem; margin-bottom: 0.05rem; list-style: none}
+  .section-block li { margin-bottom: 0.05rem; margin-top: 0.05rem; font-size: 0.92rem; color: #444; }
+
+  footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.82rem;
+    color: #aaa;
+    padding-top: 1.2rem;
+  }
+
+  @media (max-width: 480px) {
+    .header { flex-direction: column; align-items: center; text-align: center; }
+    .links { justify-content: center; }
+  }
+
+  .brainstorm-wrap {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+.brainstorm-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.brainstorm-row:hover, .brainstorm-row:focus-within { opacity: 0.85; }
+.brainstorm-row span {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+.brainstorm-row input {
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-style: italic;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent;
+  color: #444;
+  outline: none;
+  width: 190px;
+}
+.brainstorm-row input:focus { border-bottom-color: #7F77DD; }
+.brainstorm-row button {
+  font-size: 0.78rem;
+  font-family: inherit;
+  background: none;
+  border: none;
+  color: #bbb;
+  cursor: pointer;
+  padding: 0;
+}
+.brainstorm-row button:hover { color: #7F77DD; }
+.brainstorm-heading {
+  font-size: 0.75rem;
+  color: #aaa;
+  font-style: italic;
+}
+#bThanks {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: #7F77DD;
+  opacity: 0;
+  transition: opacity 2s;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <img src="media/aforsey_img.jpeg" alt="Alexandra Forsey-Smerek headshot">
+  <div class="header-info">
+    <h1>Alex Forsey-Smerek</h1>
+    <p class="subtitle">PhD Student · MIT AeroAstro &amp; CSAIL</p>
+    <p class="email">aforsey [at] mit [dot] edu</p>
+    <div class="links">
+      <a href="media/aforsey_CV_public.pdf">CV</a>
+      <a href="https://scholar.google.com/citations?user=tjS7-TUAAAAJ&hl=en&oi=ao">Google Scholar</a>
+      <a href="https://www.linkedin.com/in/alexandra-forsey-smerek">LinkedIn</a>
+      <a href="https://github.com/aforseys">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── ABOUT ── -->
+<div class="section-block">
+  <span class="section-heading">About</span>
+  <p>
+    I'm a PhD student at MIT in the AeroAstro department and CSAIL, where I work with <a href="https://aeroastro.mit.edu/people/julie-shah/">Julie Shah</a> in the <a href="https://interactive.mit.edu">Interactive Robotics Group</a>. 
+    I also collaborate closely with <a href="https://www.mit.edu/~abobu/">Andreea Bobu</a> in the <a href="https://clear.csail.mit.edu">CLEAR Lab</a>.
+    My research focuses on <span style="font-weight: 550;">robot learning from human input</span>, specifically developing <span style="font-weight: 550;">algorithms for efficient behavior adaptation and transfer across tasks</span>. I’m excited about building systems that real users can easily work with outside the lab. 
+  </p>
+
+  <p>
+    My work has been supported by the Hugh Hampton Young Fellowship at MIT and the National Defense Science and Engineering Graduate (NDSEG) Fellowship. I earned my SB and SM in Aerospace Engineering also from MIT.
+  </p>
+</div>
+
+<!-- ── RESEARCH ── -->
+<!-- <div class="section-block">
+  <span class="section-heading">Research</span>
+  <p>
+    [Your research blurb here — a few sentences describing your broad research interests and themes.]
+  </p>
+</div> -->
+
+<!-- ── RESEARCH ── -->
+<div class="section-block">
+  <button class="section-heading" onclick="toggleProjects()">
+    <span class="toggle-arrow open" id="arrow">▶</span> RESEARCH
+  </button>
+  <div class="projects-list open" id="projectsGrid">
+
+    <div class="project-item">
+      <img src="media/paper_images/CalibratedFeatures_summary.png" alt="Project 1">
+      <div class="project-item-body">
+        <p class="proj-title">Learning Contextually-Adaptive Rewards via Calibrated Features</p>
+        <p class="proj-authors"><strong>Alexandra Forsey-Smerek</strong>, Julie Shah, Andreea Bobu</p>
+        <p class="proj-venue">IEEE/ACM International Conference on Human-Robot Interaction (HRI), 2026</p>
+        <p class="proj-links">[<a href="https://doi.org/10.1145/3757279.3788669">paper</a>] [<button class="summary-btn" onclick="toggleSummary(this)">summary</button>]</p>
+        <div class="proj-summary">We introduce a framework for learning contextually adaptive rewards by separating context-invariant task preferences from feature-specific contextual adaptations. We present calibrated features as intermediate representations that capture how features should adapt to context, and we propose a new paired-comparison input for training them. We show this approach achieves a 10&times; improvement in sample efficiency over multitask baselines and enables users to effectively teach their personal contextual preferences.</div>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <img src="media/paper_images/MaskedIRL_summary.png" alt="Project 2">
+      <div class="project-item-body">
+        <p class="proj-title">Masked IRL: LLM-Guided Reward Disambiguation from Demonstrations and Language</p>
+        <p class="proj-authors">Minyoung Hwang, <strong>Alexandra Forsey-Smerek</strong>, Nathaniel Dennler, Andreea Bobu</p>
+        <p class="proj-venue">International Conference on Robotics and Automation (ICRA), 2026</p>
+        <p class="proj-links">[<a href="https://doi.org/10.48550/arXiv.2511.14565">paper</a>] [<button class="summary-btn" onclick="toggleSummary(this)">summary</button>]</p>
+        <div class="proj-summary">We introduce Masked IRL, a method that uses language to disambiguate which reward a user is optimizing when providing demonstrations. Concretely, we leverage large language models (LLMs) to produce state-relevance masks from language instructions, and enforce invariance of the learned reward to irrelevant state components. We show this method outperforms standard language-conditioning approaches, improving reward accuracy by up to 15%.</div>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <img src="media/paper_images/Automation_summary.jpeg" alt="Project 3">
+      <div class="project-item-body">
+        <p class="proj-title">Automation from the Worker's Perspective</p>
+        <p class="proj-authors">Ben Armstrong, Valerie Chen, Alex Cuellar, <strong>Alexandra Forsey-Smerek</strong>, Julie Shah</p>
+        <p class="proj-venue">arXiv, 2024</p>
+        <p class="proj-links">[<a href="https://doi.org/10.48550/arXiv.2409.20387">paper</a>] [<button class="summary-btn" onclick="toggleSummary(this)">summary</button>]</p>
+        <div class="proj-summary">We report findings from a survey of more than 9,000 workers across nine countries on attitudes toward automation. We find that workers have a generally optimistic, nuanced perspective. For example, workers who solve complex problems, feel valued by their employers, and are motivated to advance in their careers are more likely to see new technologies as beneficial.</div>
+
+        
+      </div>
+    </div>
+
+    <div class="project-item">
+      <img src="media/paper_images/MultiAgent_summary.png" alt="Project 4">
+      <div class="project-item-body">
+        <p class="proj-title">Centralized Multi-agent Synthesis with Spatial Constraints via Mixed-Integer Quadratic Programming</p>
+        <p class="proj-authors"><strong>Alexandra Forsey-Smerek</strong>, Ho Chit Su, Kevin Leahy</p>
+        <p class="proj-venue">NASA Formal Methods (NFM), 2023</p>
+        <p class="proj-links">[<a href="https://doi.org/10.1007/978-3-031-33170-1_12">paper</a>] [<button class="summary-btn" onclick="toggleSummary(this)">summary</button>]</p>
+        <div class="proj-summary">We address the challenge of centralized multi-agent synthesis for tasks specified in Signal Temporal Logic (STL) that require adherence to spatial constraints and coordinated team behaviors. We present a mixed-integer quadratic programming (MIQP) approach and empirically compare it to a mixed-integer linear programming (MILP) formulation, showing that each is better suited for different types of spatial constraints.
+        </div>
+
+      </div>
+    </div>
+
+    <div class="project-item">
+      <img src="media/paper_images/TrustCues_summary.png" alt="Project 5">
+      <div class="project-item-body">
+        <p class="proj-title">Situational Cues for Continuous Trust Calibration in Automated Systems</p>
+        <p class="proj-authors"><strong>Alexandra Forsey-Smerek</strong>, Katya Arquilla, Julie Shah</p>
+        <p class="proj-venue">International Conference on Environmental Systems (ICES), 2022</p>
+        <p class="proj-links">[<a href="https://hdl.handle.net/2346/89767">paper</a>] [<button class="summary-btn" onclick="toggleSummary(this)">summary</button>]</p>
+        <div class="proj-summary">We propose Situational Trust Cues (STCs) as visual signals to promote appropriate user trust calibration in automated systems, mitigating both undertrust and overtrust that can degrade performance. We additionally present an experimental design for investigating the application of STCs to a dynamic mission operations environment.</div>
+
+      </div>
+    </div>
+
+    <div class="project-item">
+      <img src="media/paper_images/VR_summary.jpg" alt="Project 6">
+      <div class="project-item-body">
+        <p class="proj-title">Assessment of Depth Data Acquisition Methods for Virtual Reality Mission Operations Support Tools</p>
+        <p class="proj-authors"><strong>Alexandra Forsey-Smerek</strong>, Cody Paige, Ferrous Ward, Don Derek Haddad, Lindsay Sanneman, Jessica Todd, Jennifer Heldmann, Darlene Lim, Dava Newman</p>
+        <p class="proj-venue">IEEE Aerospace Conference (AERO), 2022</p>
+        <p class="proj-links">[<a href="https://doi.org/10.1109/AERO53065.2022.9843571">paper</a>] [<button class="summary-btn" onclick="toggleSummary(this)">summary</button>]</p>
+        <div class="proj-summary">We highlight the importance of high-resolution depth data for enhancing the scientific return of future planetary missions via virtual reality (VR) tools. We compare four depth data acquisition methods and assess their suitability for supporting mission operations in immersive environments.</div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── TEACHING ── -->
+<div class="section-block">
+  <span class="section-heading">Teaching</span>
+  <ul>
+    <li> <span style="font-weight: 550;">Human Systems Engineering (16.400\16.453)</span> · TA · MIT, F21</li>
+    <li> <span style="font-weight: 550;">Introduction to Python (6.100A)</span> · Instructor · <a href="https://www.teji.mit.edu">TEJI</a> pilot program for incarcerated students, S21</li>
+    <li> <span style="font-weight: 550;">Enginering, Innovation, and Design (6.902)</span> · TA · MIT, S19 & S20</li>
+  </ul>
+</div>
+
+<!-- ── REVIEWING ── -->
+<div class="section-block">
+  <span class="section-heading">Professional Service</span>
+  <ul>
+    <li>Program Commmittee for AAAI (AI Alignment Track)</li>
+    <li>Reviewer for HRI, THRI, CoRL 2025 Human-to-Robot Workshop, RSS 2025
+      GenAI-HRI Workshop</li>
+  </ul>
+</div>
+
+<footer>
+  &copy; 2026 Alexandra Forsey-Smerek &nbsp;·&nbsp; Last updated: April 2026
+</footer>
+
+<script>
+  function toggleProjects() {
+    const grid = document.getElementById('projectsGrid');
+    const arrow = document.getElementById('arrow');
+    const open = grid.classList.toggle('open');
+    arrow.classList.toggle('open', open);
+  }
+
+  function toggleSummary(btn) {
+    const summary = btn.closest('.project-item-body').querySelector('.proj-summary');
+    const opening = summary.style.display === 'none' || summary.style.display === '';
+    summary.style.display = opening ? 'block' : 'none';
+    btn.textContent = opening ? 'hide' : 'summary';
+  }
+</script>
+
+<div class="brainstorm-wrap">
+  <span class="brainstorm-heading">Help me brainstorm!</span>
+  <div class="brainstorm-row">
+    <span>If you could teach a robot to do one thing in your home or at your job, it would be</span>
+    <input type="text" id="bInput" maxlength="120" autocomplete="off">
+    <button onclick="bSubmit()">→</button>
+  </div>
+  <div id="bThanks">thanks!</div>
+</div>
+
+<script>
+var responses = [];
+
+function bSubmit() {
+  var inp = document.getElementById('bInput');
+  var val = inp.value.trim();
+  if (!val) return;
+  responses.push(val);
+  inp.value = '';
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLSdA-vkL-YwAbZL-Dk0pB9suzqU_KWBls7pLzMqSS1c2Bax4Eg/formResponse', {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'entry.554135264=' + encodeURIComponent(val)
+  });
+  var t = document.getElementById('bThanks');
+  t.style.transition = 'none';
+  t.style.opacity = '1';
+  setTimeout(function() {
+    t.style.transition = 'opacity 2s';
+    t.style.opacity = '0';
+  }, 50);
+}
+
+document.getElementById('bInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') bSubmit();
+});
+</script>
+</body>
+</html>
